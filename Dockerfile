@@ -26,8 +26,8 @@ RUN mkdir -p ~/ffmpeg_sources ~/bin
 RUN apt-get -y install nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev
 RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git && \
 cd nv-codec-headers && \
-make
-RUN make install
+make && \
+make install
 RUN cd ~/ffmpeg_sources && \
 wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
 tar xjvf ffmpeg-snapshot.tar.bz2 && \
