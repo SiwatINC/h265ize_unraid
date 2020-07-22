@@ -21,7 +21,8 @@ RUN apt-get -y install \
   texinfo \
   wget \
   yasm \
-  zlib1g-dev
+  zlib1g-dev \
+  libunistring-dev
 RUN mkdir -p ~/ffmpeg_sources ~/bin
 RUN apt-get -y install nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev
 RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git && \
