@@ -1,6 +1,6 @@
 FROM siwatinc/nodejsubuntu_base_image
 RUN apt-get update
-RUN apt-get update -qq && sudo apt-get -y install \
+RUN apt-get -y install \
   autoconf \
   automake \
   build-essential \
@@ -23,7 +23,7 @@ RUN apt-get update -qq && sudo apt-get -y install \
   yasm \
   zlib1g-dev
 RUN mkdir -p ~/ffmpeg_sources ~/bin
-RUN apt-get install nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev
+RUN apt-get -y install nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev
 RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git\
 cd nv-codec-headers\
 make\
