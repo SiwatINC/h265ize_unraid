@@ -56,5 +56,6 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
 PATH="$HOME/bin:$PATH" make && \
 make install && \
 hash -r
+RUN cp /root/bin/* /bin
 RUN npm install -g h265ize
 CMD script --return -c "h265ize --watch -v $extraarg -m '$preset' -d '$output' -q $qp -f '$format' '$input'" /dev/null
