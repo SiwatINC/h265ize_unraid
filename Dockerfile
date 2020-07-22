@@ -1,6 +1,6 @@
 FROM siwatinc/nodejsubuntu_base_image
 RUN apt-get update
-RUN sudo apt-get update -qq && sudo apt-get -y install \
+RUN apt-get update -qq && sudo apt-get -y install \
   autoconf \
   automake \
   build-essential \
@@ -22,5 +22,37 @@ RUN sudo apt-get update -qq && sudo apt-get -y install \
   wget \
   yasm \
   zlib1g-dev
+RUN mkdir -p ~/ffmpeg_sources ~/bin
+RUN apt-get install nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libmp3lame-dev libopus-dev
+RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git\
+cd nv-codec-headers\
+make\
+sudo make install
+RUN cd ~/ffmpeg_sources && \
+wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
+tar xjvf ffmpeg-snapshot.tar.bz2 && \
+cd ffmpeg && \
+PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
+  --prefix="$HOME/ffmpeg_build" \
+  --pkg-config-flags="--static" \
+  --extra-cflags="-I$HOME/ffmpeg_build/include" \
+  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+  --extra-libs="-lpthread -lm" \
+  --bindir="$HOME/bin" \
+  --enable-gpl \
+  --enable-gnutls \
+  --enable-libass \
+  --enable-libfdk-aac \
+  --enable-libfreetype \
+  --enable-libmp3lame \
+  --enable-libopus \
+  --enable-libvorbis \
+  --enable-libvpx \
+  --enable-libx264 \
+  --enable-libx265 \
+  --enable-nonfree && \
+PATH="$HOME/bin:$PATH" make && \
+make install && \
+hash -r
 RUN npm install -g h265ize
 CMD script --return -c "h265ize --watch -v $extraarg -m '$preset' -d '$output' -q $qp -f '$format' '$input'" /dev/null
